@@ -54,8 +54,8 @@
     app.get('/pedidos', async (req, res) => {
         const lista = await Pedido.findAll({
             include: [
-                { model: Usuario, attributes: ['nome'] }, // Traz o nome do usuário
-                { model: Produto, through: { attributes: [] } } // Traz os produtos
+                { model: Usuario, attributes: ['nome'] }
+                { model: Produto, through: { attributes: [] } }
             ]
         });
         res.json(lista);
@@ -65,7 +65,6 @@
     app.listen(port, async () => {
         try {
             await sequelize.authenticate();
-            // O sync cria as tabelas e as chaves estrangeiras no SQLite
             await sequelize.sync({ force: true });
             console.log(`Servidor rodando em http://localhost:${port}`);
             console.log('Banco SQLite sincronizado e tabelas vinculadas!');
