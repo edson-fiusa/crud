@@ -1,6 +1,6 @@
 
 const express = require('express');
-const sequelize = require('../conexao/conexao'); // ajuste o path conforme sua estrutura
+const sequelize = require('../conexao/conexao');
 const Usuario = require('../routes/usuarios/usuario.js');
 const Pedido = require('../routes/pedidos/pedido.js');
 const Produto = require('../routes/produtos/produtos.js');
@@ -8,16 +8,12 @@ const Produto = require('../routes/produtos/produtos.js');
 const app = express();
 app.use(express.json());
 
-// ----- ASSOCIAÇÕES COM CASCADE PARA DELETE -----
 Usuario.hasMany(Pedido, { foreignKey: 'usuarioId', onDelete: 'CASCADE' });
 Pedido.belongsTo(Usuario, { foreignKey: 'usuarioId' });
 
 Pedido.belongsToMany(Produto, { through: 'ItemPedido', onDelete: 'CASCADE' });
 Produto.belongsToMany(Pedido, { through: 'ItemPedido', onDelete: 'CASCADE' });
 
-// ----- ROTAS -----
-
-// Usuário
 app.post('/usuario', async (req, res) => {
     try {
         const novo = await Usuario.create(req.body);
@@ -50,7 +46,6 @@ app.delete('/usuario/:id', async (req, res) => {
     }
 });
 
-// Produto
 app.post('/produto', async (req, res) => {
     try {
         const novo = await Produto.create(req.body);
@@ -83,7 +78,6 @@ app.delete('/produto/:id', async (req, res) => {
     }
 });
 
-// Pedido
 app.post('/pedidos', async (req, res) => {
     try {
         const { usuarioId, produtosIds } = req.body;
@@ -125,7 +119,6 @@ app.delete('/pedidos/:id', async (req, res) => {
     }
 });
 
-// ----- INICIALIZAÇÃO DO SERVIDOR -----
 const port = 3000;
 app.listen(port, async () => {
     try {
