@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const db = require('../conexao/conexao');
@@ -21,3 +22,4 @@ db.sync({ force: true })
     .catch(err => {
         console.error(' Erro ao conectar banco:', err);
     });
+
