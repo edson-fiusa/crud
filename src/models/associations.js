@@ -19,4 +19,4 @@ Produto.belongsToMany(Pedido, {
     otherKey: 'pedidoId'
 });
 
-console.log('✅ Associações configuradas');
+console.log('Associações configuradas');
