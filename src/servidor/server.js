@@ -12,7 +12,7 @@ app.use(routes);
 
 const PORT = 3000;
 
-db.sync({ force: true })
+db.sync({ alter: true })
     .then(() => {
         console.log(' Banco de dados conectado e sincronizado');
         app.listen(PORT, () => {
