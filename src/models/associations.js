@@ -1,5 +1,5 @@
 const usuario = require('./usuarios/usuario');
-const Pedido = require('./pedidos/itemPedido');
+const Pedido = require('./pedidos/pedido');
 const Produto = require('./produtos/produtos');
 
 usuario.hasMany(Pedido, { foreignKey: 'usuarioId' });

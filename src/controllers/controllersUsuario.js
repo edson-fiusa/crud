@@ -3,17 +3,10 @@ const Usuario = require('../models/usuarios/usuario');
 module.exports = {
     async buscarPorId(req, res) {
     try {
-        const { id } = req.params;
-        const usuario = await Usuario.findByPk(id);
-
-        if (!usuario) {
-            return res.status(404).json({ mensagem: "Usuário não encontrado" });
-        }
-
-        res.json(usuario);
-    } catch (error) {
-        res.status(500).json({ erro: error.message });
-    }
+        const user = await Usuario.findByPk(req.params.id);
+        if (!user) return res.status(404).json({ mensagem: "Usuário não encontrado" });
+        res.json(user);
+    } catch (e) { res.status(500).json({ erro: e.message }); }
 },
 
     async listar(req, res) {

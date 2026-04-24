@@ -1,4 +1,4 @@
-const Pedido = require('../models/pedidos/itemPedido');
+const Pedido = require('../models/pedidos/pedido');
 const Usuario = require('../models/usuarios/usuario');
 const Produto = require('../models/produtos/produtos');
 
@@ -6,17 +6,20 @@ module.exports = {
     async buscarPorId(req, res) {
     try {
         const { id } = req.params;
-        const pedido = await Pedido.findByPk(id);
-
-        if (!pedido) {
-            return res.status(404).json({ mensagem: "Pedido não encontrado" });
-        }
-
-        res.json(pedido);
+        const resultado = await Pedido.findByPk(id, { 
+            include: [
+                { model: Usuario, attributes: ['id', 'nome', 'email'] },
+                { model: Produto, attributes: ['nome', 'preco'], through: { attributes: [] } }
+            ]
+        });
+        
+        if (!resultado) return res.status(404).json({ mensagem: "Pedido não encontrado" });
+        
+        res.json(resultado);
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
-    },
+},
 
     async criar(req, res) {
         try {
@@ -44,20 +47,19 @@ module.exports = {
     
     async atualizar(req, res) {
     try {
-        const { id } = req.params; // Captura o ID da URL
-        const dadosAtualizados = req.body; // Captura os novos dados do corpo
+        const { id } = req.params;
+        const dadosAtualizados = req.body; 
 
-        // 1. Tenta atualizar o registro
         const [linhasAfetadas] = await Pedido.update(dadosAtualizados, {
             where: { id: id }
         });
 
-        // 2. Verifica se o registro existia
+     
         if (linhasAfetadas === 0) {
             return res.status(404).json({ mensagem: "Pedido não encontrado." });
         }
 
-        // 3. Opcional: Buscar o objeto atualizado para retornar ao front-end
+   
         const pedidoAtualizado = await Pedido.findByPk(id, {
             include: [
                 { model: Usuario, attributes: ['id', 'nome', 'email'] },
@@ -70,7 +72,7 @@ module.exports = {
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
-},
+    },
 
     async deletar(req, res) {
         try {
