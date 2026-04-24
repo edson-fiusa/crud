@@ -3,6 +3,21 @@ const Usuario = require('../models/usuarios/usuario');
 const Produto = require('../models/produtos/produtos');
 
 module.exports = {
+    async buscarPorId(req, res) {
+    try {
+        const { id } = req.params;
+        const pedido = await Pedido.findByPk(id);
+
+        if (!pedido) {
+            return res.status(404).json({ mensagem: "Pedido não encontrado" });
+        }
+
+        res.json(pedido);
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+    },
+
     async criar(req, res) {
         try {
             const { usuarioId } = req.body;

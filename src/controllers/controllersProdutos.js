@@ -1,6 +1,21 @@
 const Produto = require('../models/produtos/produtos');
 
 module.exports = {
+    async buscarPorId(req, res) {
+        try {
+            const { id } = req.params;
+            const produto = await Produto.findByPk(id);
+            
+            if (!produto) {
+                return res.status(404).json({ mensagem: "Produto não encontrado" });
+            }
+            
+            res.json(produto);
+        } catch (error) {
+            res.status(500).json({ erro: error.message });
+        }
+    },
+
     async listar(req, res) {
         try {
             const produtos = await Produto.findAll();
