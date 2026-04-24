@@ -17,4 +17,6 @@ Produto.belongsToMany(Pedido, {
     otherKey: 'pedidoId'
 });
 
+
 console.log('Associações configuradas');
+
