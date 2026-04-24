@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 const db = require('../conexao/conexao');
+const cors = require('cors');
+app.use(cors());
 
 require('../models/associations');
 
